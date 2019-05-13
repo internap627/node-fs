@@ -1,9 +1,19 @@
-const http = require('http')
+const express = require('express')
+const app = express()
+const mongoose = require('mongoose')
+require('dotenv').config()
 
-const server = http.createServer((req,res) => {
-    console.log(req)
-    res.write('Hello World')
-    res.end()
+//Routes
+const postRoutes = require('./routes/posts.js')
+
+app.use('/posts', postRoutes)
+
+
+
+//Connect to DB
+mongoose.connect(process.env.DB_CONNECTION, { useNewUrlParser: true },  () => {
+    console.log('connected to DB')
 })
 
-server.listen(5000, () => console.log('server running....'))
+//Start Server
+app.listen(5000)
